@@ -39,3 +39,4 @@ public class Address extends Audit{
     @JoinColumn(name = "user_id")
     private User user;
 }
+
