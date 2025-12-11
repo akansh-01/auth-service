@@ -1,0 +1,2 @@
+ALTER TABLE address
+      ADD COLUMN city VARCHAR(255) NOT NULL
