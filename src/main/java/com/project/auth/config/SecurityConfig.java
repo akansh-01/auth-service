@@ -22,9 +22,17 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
 
          return httpSecurity
-                 .csrf(AbstractHttpConfigurer::disable)
+                 .csrf(AbstractHttpConfigurer::disable)  // Disabled for stateless JWT auth
                  .authorizeHttpRequests(auth->auth
-                         .requestMatchers("/auth/register","/auth/token","/auth/validate").permitAll()
+                         // Public authentication endpoints (anyone can access)
+                         .requestMatchers("/auth/register", "/auth/login", "/auth/token", 
+                                         "/auth/refresh", "/auth/logout", 
+                                         "/auth/validate", "/auth/user-info",
+                                         "/auth/forgot-password").permitAll()
+                         .requestMatchers("/actuator/**").permitAll()
+                         .requestMatchers("/auth/profile/**").permitAll()
+                         .requestMatchers("/auth/change-password/**").permitAll()
+                         .requestMatchers("/auth/admin/**").permitAll()
                          .anyRequest().authenticated()
                  )
                  .build();
