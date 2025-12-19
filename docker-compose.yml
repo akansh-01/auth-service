@@ -23,7 +23,7 @@ services:
 
   # Eureka Service Discovery
   eureka-server:
-    image: hungrycoders/eureka-server:latest  # You'll need to create this
+    image: akanshproject/eureka-server:latest  # You'll need to create this
     container_name: eureka-server
     ports:
       - "8761:8761"
@@ -136,7 +136,7 @@ services:
   # API Gateway (Spring Cloud Gateway)
   # Uncomment when ready to add
   # api-gateway:
-  #   image: hungrycoders/api-gateway:latest
+  #   image: akanshproject/api-gateway:latest
   #   container_name: api-gateway
   #   ports:
   #     - "8080:8080"
@@ -152,7 +152,7 @@ services:
 
   # Doctor Service (To be created)
   # doctor-service:
-  #   image: hungrycoders/doctor-service:latest
+  #   image: akanshproject/doctor-service:latest
   #   container_name: doctor-service
   #   ports:
   #     - "9001:9001"
@@ -161,7 +161,7 @@ services:
 
   # Patient Service (To be created)
   # patient-service:
-  #   image: hungrycoders/patient-service:latest
+  #   image: akanshproject/patient-service:latest
   #   container_name: patient-service
   #   ports:
   #     - "9002:9002"
@@ -170,7 +170,7 @@ services:
 
   # Appointment Service (To be created)
   # appointment-service:
-  #   image: hungrycoders/appointment-service:latest
+  #   image: akanshproject/appointment-service:latest
   #   container_name: appointment-service
   #   ports:
   #     - "9003:9003"
@@ -179,7 +179,7 @@ services:
 
   # Notification Service (To be created)
   # notification-service:
-  #   image: hungrycoders/notification-service:latest
+  #   image: akanshproject/notification-service:latest
   #   container_name: notification-service
   #   ports:
   #     - "9004:9004"

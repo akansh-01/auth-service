@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-jdk21
+    container_name: jenkins
+    privileged: true
+    user: root
+    ports:
+      - "8080:8080"  # Jenkins UI
+      - "50000:50000"  # Jenkins agent port
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # Docker socket for building images
+      - ./:/workspace  # Mount project directory
+    environment:
+      # - JENKINS_OPTS=--prefix=/jenkins  # Commented out - access at root URL
+      # - JAVA_OPTS=-Djenkins.install.runSetupWizard=false  # Commented to enable setup wizard
+    networks:
+      - jenkins-network
+    restart: unless-stopped
+
+  # PostgreSQL for Jenkins data (optional)
+  jenkins-db:
+    image: postgres:16-alpine
+    container_name: jenkins-postgres
+    environment:
+      POSTGRES_DB: jenkins
+      POSTGRES_USER: jenkins
+      POSTGRES_PASSWORD: jenkins123
+    ports:
+      - "5433:5432"
+    volumes:
+      - jenkins_postgres_data:/var/lib/postgresql/data
+    networks:
+      - jenkins-network
+    restart: unless-stopped
+
+  # SonarQube for code quality (optional)
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    depends_on:
+      - jenkins-db
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://jenkins-db:5432/sonarqube
+      SONAR_JDBC_USERNAME: jenkins
+      SONAR_JDBC_PASSWORD: jenkins123
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    networks:
+      - jenkins-network
+    restart: unless-stopped
+
+networks:
+  jenkins-network:
+    driver: bridge
+
+volumes:
+  jenkins_home:
+  jenkins_postgres_data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+

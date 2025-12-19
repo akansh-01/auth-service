@@ -3,6 +3,8 @@ plugins {
 	id 'org.springframework.boot' version '3.2.5'
 	id 'io.spring.dependency-management' version '1.1.4'
 	id 'org.flywaydb.flyway' version "10.17.3"
+	id 'jacoco'  // Code coverage for Jenkins
+	id 'org.owasp.dependencycheck' version '9.0.9'  // Security scanning
 }
 
 ext {
@@ -85,4 +87,52 @@ dependencyManagement {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport  // Generate coverage report after tests
+}
+
+// JaCoCo Configuration for Code Coverage
+jacoco {
+	toolVersion = "0.8.11"
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = true  // Required for Jenkins
+		html.required = true
+		csv.required = false
+	}
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+				'**/config/**',
+				'**/dto/**',
+				'**/entity/**',
+				'**/enums/**'
+			])
+		}))
+	}
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.5  // 50% minimum coverage
+			}
+		}
+	}
+}
+
+// OWASP Dependency Check Configuration
+dependencyCheck {
+	formats = ['HTML', 'JSON', 'XML']
+	outputDirectory = 'build/reports/dependency-check'
+	suppressionFile = 'owasp-suppressions.xml'  // Optional: suppress false positives
+	failBuildOnCVSS = 7  // Fail build if CVSS score >= 7
+	analyzers {
+		assemblyEnabled = false
+		nuspecEnabled = false
+		nodeEnabled = false
+	}
 }

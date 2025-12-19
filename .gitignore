@@ -1,37 +1,73 @@
-HELP.md
-.gradle
+# Gradle
+.gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+!gradle/wrapper/gradle-wrapper.properties
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-
-### IntelliJ IDEA ###
-.idea
-*.iws
+# IDE
+.idea/
+.vscode/
 *.iml
 *.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+*.iws
+.settings/
+.project
+.classpath
+bin/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# Spring Boot
+spring-boot-logger.log
 
-### VS Code ###
-.vscode/
+# OS
+.DS_Store
+Thumbs.db
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# Test Coverage
+*.exec
+.jacoco/
+
+# Jenkins
+jenkins_home/
+.jenkins/
+
+# Docker
+*.env
+docker-compose.override.yml
+
+# Logs
+logs/
+*.log
+
+# Security
+*.pem
+*.key
+*.p12
+secrets/
+
+# Database
+*.db
+*.sql.bak
+
+# Flyway
+flyway.conf
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
+
+# OWASP Dependency Check
+dependency-check-data/
+owasp-dependency-check.html
+
+# SonarQube
+.sonar/
+.scannerwork/

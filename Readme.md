@@ -1,4 +1,4 @@
-# Auth Service - Healthcare System by HungryCoders
+# Auth Service - Healthcare System 
 
 This is the **Authentication & Authorization Microservice** for the Healthcare Management platform. It handles user registration, secure login, JWT (JSON Web Token) generation/validation, and integrates with the microservices ecosystem via Spring Cloud.
 
@@ -111,12 +111,12 @@ docker-compose down -v
 
 ```bash
 # Build the Docker image
-docker build -t hungrycoders/auth-service:latest .
+docker build -t akanshproject/auth-service:latest .
 
 # Run standalone
 docker run -p 9898:9898 \
   -e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/auth_project \
-  hungrycoders/auth-service:latest
+  akanshproject/auth-service:latest
 ```
 
 ---
@@ -422,13 +422,13 @@ The Auth Service uses the `auth` schema with the following tables:
 
 ## 📄 License
 
-This project is part of the Healthcare System by HungryCoders.
+This project is part of the Healthcare System.
 
 ---
 
 ## 📧 Contact
 
-For questions or support, please contact the HungryCoders team.
+For questions or support, please contact to me.
 
 ---
 
