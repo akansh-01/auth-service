@@ -2,11 +2,15 @@ pipeline {
     agent any
     
     tools {
-        jdk 'JDK21'  // Configure this in Jenkins Global Tool Configuration
-        gradle 'Gradle8'  // Configure this in Jenkins Global Tool Configuration
+        // Gradle auto-installation
+        gradle 'Gradle8'
     }
     
     environment {
+        // Use the JDK that comes with jenkins/jenkins:lts-jdk21 image
+        JAVA_HOME = '/opt/java/openjdk'
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
+        
         // Docker configuration
         DOCKER_IMAGE = "akanshproject/auth-service"
         DOCKER_TAG = "${BUILD_NUMBER}"
