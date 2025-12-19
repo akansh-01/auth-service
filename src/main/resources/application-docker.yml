@@ -2,21 +2,17 @@ server:
   port: 9898
 
 spring:
-  profiles:
-    active: standalone  # Use 'standalone' for local dev, 'docker' for containers
-  
   application:
     name: auth-service
   
   cloud:
     config:
-      enabled: false  # Disable Config Server by default
-      fail-fast: false  # Don't fail if unavailable
+      enabled: false  # Disable Config Server for now
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/auth_project
-    username: postgres
-    password: root
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://auth-db:5432/auth_project}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
     driver-class-name: org.postgresql.Driver
 
   flyway:
@@ -30,25 +26,24 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default-schema: auth
 
-# Eureka Client Configuration
+# Eureka Client Configuration for Docker
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
-    fetch-registry: false
-    register-with-eureka: false  # Disabled for local development
-    enabled: false
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://eureka-server:8761/eureka/}
+    fetch-registry: true
+    register-with-eureka: true
   instance:
-    hostname: localhost
-    prefer-ip-address: true
+    prefer-ip-address: false
+    hostname: auth-service
 
-# Actuator Configuration for Health Checks & Monitoring
+# Actuator Configuration
 management:
   endpoints:
     web:
@@ -61,9 +56,12 @@ management:
     env:
       enabled: true
   tracing:
-    enabled: false  # Disable tracing by default
+    enabled: false  # Disable for now, enable when Zipkin is available
     sampling:
-      probability: 0.0  # Don't sample any requests
+      probability: 0.0
+  zipkin:
+    tracing:
+      endpoint: ${MANAGEMENT_ZIPKIN_TRACING_ENDPOINT:http://zipkin:9411/api/v2/spans}
 
 # Application Info
 info:
@@ -71,9 +69,11 @@ info:
     name: Auth Service
     description: Authentication and Authorization Service for Healthcare System
     version: 1.0.0
+    environment: docker
 
 # JWT Configuration
 auth:
   secret: TaqlmGv1iEDMRiFp/pHuID1+T8YvZdy0tK5xfvaksuM=
   access-token-expiration: 900000      # 15 minutes in milliseconds
   refresh-token-expiration: 604800000  # 7 days in milliseconds
+

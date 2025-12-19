@@ -2,16 +2,12 @@ server:
   port: 9898
 
 spring:
-  profiles:
-    active: standalone  # Use 'standalone' for local dev, 'docker' for containers
-  
   application:
     name: auth-service
   
   cloud:
     config:
-      enabled: false  # Disable Config Server by default
-      fail-fast: false  # Don't fail if unavailable
+      enabled: false  # Disable Config Server for standalone mode
 
   datasource:
     url: jdbc:postgresql://localhost:5432/auth_project
@@ -36,19 +32,14 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default-schema: auth
 
-# Eureka Client Configuration
+# Eureka Client Configuration - DISABLED for standalone mode
 eureka:
   client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-    fetch-registry: false
-    register-with-eureka: false  # Disabled for local development
     enabled: false
-  instance:
-    hostname: localhost
-    prefer-ip-address: true
+    register-with-eureka: false
+    fetch-registry: false
 
-# Actuator Configuration for Health Checks & Monitoring
+# Actuator Configuration
 management:
   endpoints:
     web:
@@ -61,9 +52,10 @@ management:
     env:
       enabled: true
   tracing:
-    enabled: false  # Disable tracing by default
-    sampling:
-      probability: 0.0  # Don't sample any requests
+    enabled: false  # Disable tracing for standalone mode
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans  # Not used when disabled
 
 # Application Info
 info:
@@ -71,9 +63,11 @@ info:
     name: Auth Service
     description: Authentication and Authorization Service for Healthcare System
     version: 1.0.0
+    mode: standalone
 
 # JWT Configuration
 auth:
   secret: TaqlmGv1iEDMRiFp/pHuID1+T8YvZdy0tK5xfvaksuM=
   access-token-expiration: 900000      # 15 minutes in milliseconds
   refresh-token-expiration: 604800000  # 7 days in milliseconds
+

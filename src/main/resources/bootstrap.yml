@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    config:
+      enabled: false  # Disable Config Server for local development
+      fail-fast: false  # Don't fail if Config Server is unavailable
+
+management:
+  tracing:
+    enabled: false  # Disable distributed tracing for local development
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+

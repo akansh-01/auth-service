@@ -38,4 +38,15 @@ public class User extends Audit{
 
     @Column(name = "role", nullable = false)
     private String role;
+
+    @Column(name = "is_active")
+    @Builder.Default
+    private Boolean isActive = true;
+
+    @Column(name = "is_verified")
+    @Builder.Default
+    private Boolean isVerified = false;
+
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
 }
