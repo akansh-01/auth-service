@@ -26,6 +26,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the application...'
+                sh 'chmod +x gradlew'
                 sh './gradlew clean build -x test'
             }
         }
@@ -33,6 +34,7 @@ pipeline {
         stage('Unit Tests') {
             steps {
                 echo 'Running unit tests...'
+                sh 'chmod +x gradlew'
                 sh './gradlew test'
             }
             post {
@@ -50,6 +52,7 @@ pipeline {
         stage('Code Coverage') {
             steps {
                 echo 'Generating code coverage report...'
+                sh 'chmod +x gradlew'
                 sh './gradlew jacocoTestReport'
             }
             post {
@@ -81,6 +84,7 @@ pipeline {
                 echo 'Running OWASP dependency check...'
                 script {
                     try {
+                        sh 'chmod +x gradlew'
                         sh './gradlew dependencyCheckAnalyze'
                     } catch (Exception e) {
                         echo "Security scan failed: ${e.message}"
